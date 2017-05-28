@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour {
         }else if(player == 2) {
             pointsP2 = score;
         }
+        Debug.Log("New score: " + pointsP1 + " : " + pointsP2);
         scoreText.text = pointsP1 + " : " + pointsP2;
 
         ballRB.transform.position = Vector2.zero;
