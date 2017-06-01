@@ -79,6 +79,8 @@
     <Compile Include="Assets\Scripts\Fields.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\MenuController.cs" />
+    <Compile Include="Assets\Scripts\Network.cs" />
+    <Compile Include="Assets\Scripts\OpenSocket.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
