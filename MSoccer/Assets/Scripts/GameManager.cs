@@ -6,6 +6,16 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
+    //private int player;
+    //public int Player {
+    //    get {
+    //        return this.player;
+    //    }
+    //    set {
+    //        this.player = value;
+    //    }
+    //}
+
     public Text scoreText;
     public Rigidbody2D ballRB;
 

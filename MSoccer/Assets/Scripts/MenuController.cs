@@ -20,7 +20,7 @@ public class MenuController : MonoBehaviour {
 	}
 
     public void Play() {
-        SceneManager.LoadScene("scene1");
+        SceneManager.LoadScene("login2");
     }
 
     public void Exit() {

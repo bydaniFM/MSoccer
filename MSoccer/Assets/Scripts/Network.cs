@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System;
 using System.Net.Sockets;
 using System.Net;
@@ -9,9 +10,6 @@ using System.Threading;
 using System.Timers;
 
 public class Network : MonoBehaviour {
-    static UdpClient udpClient = new UdpClient();
-    private static System.Timers.Timer aTimer;
-    static int cnt = 0;
 
     public string username;
     public string password;
@@ -32,20 +30,8 @@ public class Network : MonoBehaviour {
         //ConnectTCP("127.0.0.1", 80, "GET /userDB.php?login="+strName+" HTTP/1.1\r\nHost: localhost:80\r\n\r\n" );
         //ConnectUDP("127.0.0.1", 20000, "Hello Server");
         //ConnectUDPThreaded("127.0.0.1", 20000, "Hello Server");
-
-        aTimer = new System.Timers.Timer(60);
-        aTimer.Elapsed += OnTimedEvent;
-        aTimer.AutoReset = true;
-        aTimer.Enabled = true;
     }
-
-
-    static void OnTimedEvent(System.Object source, ElapsedEventArgs e) {
-        Byte[] sendBytes = System.Text.Encoding.ASCII.GetBytes("Timer" + cnt);
-        udpClient.Send(sendBytes, sendBytes.Length);
-        cnt++;
-    }
-
+    
     // Update is called once per frame
     void Update() {
     }
@@ -61,11 +47,7 @@ public class Network : MonoBehaviour {
         ConnectTCP("127.0.0.1", 80, "GET /userDB.php?login=" + username + "&" + "password=" + password + " HTTP/1.1\r\nHost: localhost:80\r\n\r\n");
     }
 
-    void OnApplicationQuit() {
-        Debug.Log("Quit");
-        aTimer.Stop();
-        udpClient.Close();
-    }
+    
 
     void ConnectTCP(String server, Int32 port, String Message) {
         try {
@@ -90,6 +72,12 @@ public class Network : MonoBehaviour {
 
             loginMessage.text = Response;
 
+            if(Response == "player1") {
+                StartGame(1);
+            }else if(Response == "player2") {
+                StartGame(2);
+            }
+
             stream.Close();
             client.Close();
         } catch (ArgumentNullException e) {
@@ -99,67 +87,12 @@ public class Network : MonoBehaviour {
         }
     }
 
-    void ConnectUDP(String server, Int32 port, String Message) {
-        UdpClient udpClient = new UdpClient();
-        try {
-            udpClient.Connect(server, port);
-
-            Byte[] sendBytes = System.Text.Encoding.ASCII.GetBytes(Message);
-            udpClient.Send(sendBytes, sendBytes.Length);
-
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, 0);
-            Byte[] received = udpClient.Receive(ref endPoint);
-
-            String data = System.Text.Encoding.ASCII.GetString(received);
-
-            Debug.Log("--> " + data);
-
-            udpClient.Close();
-        } catch (Exception e) {
-            Debug.Log("Exception");
-        }
-    }
-
-    public class Receiver {
-        UdpClient udpSocket;
-        IPEndPoint endPoint;
-
-        public Receiver(UdpClient udpClient) {
-            udpSocket = udpClient;
-            endPoint = new IPEndPoint(IPAddress.Any, 0);
-        }
-
-        public void ThreadProc() {
-            Debug.Log("Start");
-            try {
-                while (true) {
-                    Byte[] received = udpSocket.Receive(ref endPoint);
-                    String data = System.Text.Encoding.ASCII.GetString(received);
-                    Debug.Log("--> " + data);
-                }
-            } catch (Exception e) {
-                Debug.Log("Exception");
-            }
-        }
-    }
-
-    void ConnectUDPThreaded(String server, Int32 port, String Message) {
-        try {
-            Receiver rec = new Receiver(udpClient);
-
-            udpClient.Connect(server, port);
-
-            Byte[] sendBytes = System.Text.Encoding.ASCII.GetBytes(Message);
-            udpClient.Send(sendBytes, sendBytes.Length);
-
-            Thread udpThread = new Thread(new ThreadStart(rec.ThreadProc));
-
-            udpThread.Start();
-            while (!udpThread.IsAlive) ;
-
-            //    udpClient.Close();
-        } catch (Exception e) {
-            Debug.Log("Exception");
+    void StartGame(int player) {
+        Debug.Log("Launching game as player " + player);
+        if(player == 1 || player == 2) {
+            SceneManager.LoadScene("scene1");
+            Player.playerNum = player;
+            ClientManager.playerNum = player;
         }
     }
 }

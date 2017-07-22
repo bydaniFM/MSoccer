@@ -6,7 +6,8 @@ public class Player : MonoBehaviour {
 
     public GameObject player;
 
-    public int playerNum;
+    static public int playerNum = 0;
+    public int playerTmp = 0;
 
     public bool inField;
 
@@ -15,10 +16,10 @@ public class Player : MonoBehaviour {
 
         player.GetComponent<GameObject>();
 
-        if (this.transform.position.x < 0)
-            playerNum = 1;
-        else
-            playerNum = 2;
+        //if (this.transform.position.x < 0)
+        //    playerNum = 1;
+        //else
+        //    playerNum = 2;
 
         inField = true;
 		
@@ -26,38 +27,39 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        playerTmp = playerNum;
 	}
 
     private void FixedUpdate() {
 
-        if(playerNum == 1) {
+        //if(playerNum == 1) {
             if(player.transform.position.x > 0) {
                 inField = false;
                 Debug.Log("Player " + playerNum + " invaded opponent's field");
             }
-        }
-        if (playerNum == 2) {
-            if (player.transform.position.x < 0) {
-                inField = false;
-                Debug.Log("Player " + playerNum + " invaded opponent's field");
-            }
-        }
+        //}
+        //if (playerNum == 2) {
+        //    if (player.transform.position.x < 0) {
+        //        inField = false;
+        //        Debug.Log("Player " + playerNum + " invaded opponent's field");
+        //    }
+        //}
     }
 
     private void OnMouseDrag() {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0;
 
-        if(playerNum == 1) {
+        //if(playerNum == 1) {
             if(mousePos.x < 0) {
                 inField = true;
             }
-        } else if (playerNum == 2) {
-            if (mousePos.x > 0) {
-                inField = true;
-            }
-        }
+        //}
+        //else if (playerNum == 2) {
+        //    if (mousePos.x > 0) {
+        //        inField = true;
+        //    }
+        //}
 
         if (!inField) {
             mousePos.x = 0;
