@@ -23,58 +23,139 @@ public class ClientManager : MonoBehaviour {
 
     public GameObject waitingForPlayers;
 
-    static UdpClient udpClient = new UdpClient();
+    static UdpClient udpClient;
+    private IPEndPoint endPoint;
 
+    public bool connected;
     public bool playersConnected;
+    public bool inGame;
 
     // Use this for initialization
     void Start () {
 
         myDebug = this.GetComponent<DebugHandler>();
 
+        connected = false;
         playersConnected = false;
+        inGame = false;
 
-        StartCoroutine(StartConnection(playerNum + " Player connecting"));
-        //StartCoroutine(ConnectUDP("127.0.0.1", 8888, 1 + " Player connected"));
+        udpClient = new UdpClient();
+        udpClient.Connect(server, port);
+        endPoint = new IPEndPoint(IPAddress.Any, 0);
+
+        //StartCoroutine(StartConnection(playerNum + " Player connecting"));
+        StartCoroutine(GameLoop());
 
     }
 
     IEnumerator StartConnection(string Message) {
-        UdpClient udpClient = new UdpClient();
-        udpClient.Connect(server, port);
+
+        DebugConsole.Log("Starting game as player " + playerNum);
 
         waitingForPlayers.SetActive(true);
         //int count = 0;
-        while (!playersConnected) {
+        while (!connected) {
             //myDebug.Log(count + "Some message");
             //DebugConsole.Log(count + "Some message");
             //count++;
 
-            // Send
-            Byte[] sendMessage = System.Text.Encoding.ASCII.GetBytes(Message);
-            udpClient.Send(sendMessage, sendMessage.Length);
-            // Receive
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, 0);
-            Byte[] received = udpClient.Receive(ref endPoint);
-            String data = System.Text.Encoding.ASCII.GetString(received);
-
-            myDebug.Log(data);
-            DebugConsole.Log(data);
+            send(Message);
+            if(receive() == playerNum+"Player connected") {
+                waitingForPlayers.SetActive(false);
+                StartCoroutine(WaitForPlayer());
+                //StopCoroutine("StartConnection");
+                connected = true;
+            }
 
             yield return new WaitForSeconds(1);
-
-            if (data == "connection established") {
-                playersConnected = true;
-                myDebug.Log("Two players connected");
-                DebugConsole.Log("Two players connected (1-2)");
-            }
         }
-        myDebug.Log("Two players connected (2-2)");
-        DebugConsole.Log("Two players connected (2-2)");
-        waitingForPlayers.SetActive(false);
     }
 
-    /*
+    IEnumerator WaitForPlayer() {
+        while (!playersConnected) {
+            send(playerNum + "waiting");
+            if(receive() == "connection established") {
+                StartCoroutine(GameLoop());
+                //StopCoroutine("WaitForPlayer");
+                playersConnected = true;
+            }
+            yield return new WaitForSeconds(1);
+        }
+    }
+
+    IEnumerator GameLoop() {
+
+        inGame = true;
+        string newPos = "";
+
+        while (inGame) {
+
+            if (playerNum == 1) {
+                send(1 + Player1.transform.position.ToString());
+                newPos = receive();
+                if(newPos[1] == '(')
+                    sendPlayer2Pos(newPos);
+            } else if (playerNum == 2) {
+                send(2 + Player1.transform.position.ToString());
+                newPos = receive();
+                if (newPos[1] == '(')
+                    sendPlayer2Pos(newPos);
+            }
+
+            yield return new WaitForSeconds(.01f);
+        }
+
+    }
+
+    public void send(string Message) {
+        DebugConsole.Log("Sending: " + Message);
+        Byte[] sendMessage = System.Text.Encoding.ASCII.GetBytes(Message);
+        udpClient.Send(sendMessage, sendMessage.Length);
+    }
+
+    public String receive() {
+        //IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, 0);
+        Byte[] received = udpClient.Receive(ref endPoint);
+        String data = System.Text.Encoding.ASCII.GetString(received);
+        DebugConsole.Log("Received: " + data);
+        return data;
+    }
+
+    public void sendPlayer2Pos(String posRaw) {
+        String pos = posRaw.Substring(1);
+        Vector3 newPos = StringToVector3(pos);
+        //if (playerNum == 1)
+            newPos = new Vector3(-newPos.x, newPos.y);
+        DebugConsole.Log("Setting player2 position to: " + newPos);
+        Player2.transform.position = new Vector3(newPos.x, newPos.y);
+    }
+
+    void OnApplicationQuit() {
+        Debug.Log("Quit");
+        //aTimer.Stop();
+        udpClient.Close();
+    }
+
+    public static Vector3 StringToVector3(string sVector) {
+        // Remove the parentheses
+        if (sVector.StartsWith("(") && sVector.EndsWith(")")) {
+            sVector = sVector.Substring(1, sVector.Length - 2);
+        }
+
+        // split the items
+        string[] sArray = sVector.Split(',');
+
+        // store as a Vector3
+        Vector3 result = new Vector3(
+            float.Parse(sArray[0]),
+            float.Parse(sArray[1]),
+            float.Parse(sArray[2]));
+
+        return result;
+    }
+}
+
+/*
     IEnumerator ConnectUDP(String server, Int32 port, String Message) {
         UdpClient udpClient = new UdpClient();
         //try {
@@ -124,39 +205,6 @@ public class ClientManager : MonoBehaviour {
         //}
     }
     */
-
-    public void sendPlayer2Pos(String pos) {
-        Debug.Log("Setting player2 position to: " + pos);
-        Vector3 newPos = StringToVector3(pos);
-        Player2.transform.position = new Vector3(-newPos.x, newPos.y);
-    }
-
-    void OnApplicationQuit() {
-        Debug.Log("Quit");
-        //aTimer.Stop();
-        udpClient.Close();
-    }
-
-    public static Vector3 StringToVector3(string sVector) {
-        // Remove the parentheses
-        if (sVector.StartsWith("(") && sVector.EndsWith(")")) {
-            sVector = sVector.Substring(1, sVector.Length - 2);
-        }
-
-        // split the items
-        string[] sArray = sVector.Split(',');
-
-        // store as a Vector3
-        Vector3 result = new Vector3(
-            float.Parse(sArray[0]),
-            float.Parse(sArray[1]),
-            float.Parse(sArray[2]));
-
-        return result;
-    }
-}
-
-
 
 //public class Receiver {
 //    UdpClient udpSocket;

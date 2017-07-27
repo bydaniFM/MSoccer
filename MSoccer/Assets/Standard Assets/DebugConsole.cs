@@ -192,11 +192,13 @@ public class DebugConsole : MonoBehaviour {
     }
     //+++++++++ INTERFACE FUNCTIONS ++++++++++++++++++++++++++++++++
     public static void Log(string message, string color) {
+        Debug.Log(message);
         DebugConsole.instance.AddMessage(message, color);
 
     }
     //++++ OVERLOAD ++++
     public static void Log(string message) {
+        Debug.Log(message);
         DebugConsole.instance.AddMessage(message);
     }
 
