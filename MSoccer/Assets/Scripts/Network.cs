@@ -87,7 +87,7 @@ public class Network : MonoBehaviour {
         }
     }
 
-    void StartGame(int player) {
+    public void StartGame(int player) {
         Debug.Log("Launching game as player " + player);
         if(player == 1 || player == 2) {
             SceneManager.LoadScene("scene1");

@@ -1,0 +1,144 @@
+Initialize engine version: 5.5.0f3 (38b4efef76f0)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GTX 970M (ID=0x1618)
+    Vendor:   NVIDIA
+    VRAM:     3038 MB
+    Driver:   22.21.13.8476
+Begin MonoManager ReloadAssembly
+Platform assembly: D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
+Loading D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
+- Completed reload, in  0.027 seconds
+Platform assembly: D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 1.156345 ms
+Initialize engine version: 5.5.0f3 (38b4efef76f0)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GTX 970M (ID=0x1618)
+    Vendor:   NVIDIA
+    VRAM:     3038 MB
+    Driver:   22.21.13.8476
+Begin MonoManager ReloadAssembly
+Platform assembly: D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
+Loading D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
+- Completed reload, in  0.022 seconds
+Platform assembly: D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: D:\GitKraken\MSoccer\Builds\build_11_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 1.786864 ms
+Launching game as player 1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 5.276839 ms
+
+Unloading 7 unused Assets to reduce memory usage. Loaded Objects now: 399.
+Total: 0.279703 ms (FindLiveObjects: 0.039506 ms CreateObjectMapping: 0.015802 ms MarkObjects: 0.214123 ms  DeleteObjects: 0.009876 ms)
+
+1Player connected
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+1Player connected
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+1Player connected
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Launching game as player 2
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 5.302913 ms
+
+Unloading 7 unused Assets to reduce memory usage. Loaded Objects now: 399.
+Total: 0.276543 ms (FindLiveObjects: 0.043456 ms CreateObjectMapping: 0.030419 ms MarkObjects: 0.192790 ms  DeleteObjects: 0.009481 ms)
+
+connection established
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Bounce!
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+connection established
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Two players connected
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Two players connected (2-2)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Two players connected
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Two players connected (2-2)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Bounce!
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Goal!!
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+New score: 0 : 1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Quit
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Setting up 2 worker threads for Enlighten.
+  Thread -> id: 1564 -> priority: 1 
+  Thread -> id: f0c -> priority: 1 
+Quit
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Setting up 2 worker threads for Enlighten.
+  Thread -> id: 2b90 -> priority: 1 
+  Thread -> id: e6c -> priority: 1 

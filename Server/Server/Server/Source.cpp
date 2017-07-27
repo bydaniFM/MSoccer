@@ -1,10 +1,20 @@
 #include<stdio.h>
 #include<winsock2.h>
+#include<string>
+
+using namespace std;
 
 #pragma comment(lib,"ws2_32.lib") //Winsock Library
 
 #define BUFLEN 512  //Max length of buffer
 #define PORT 8888   //The port on which to listen for incoming data
+
+struct playerData {
+	sockaddr_in my_si_other;
+	int my_slen = sizeof(my_si_other);
+} player1, player2;
+
+void sendToPlayer(SOCKET s, string str, int playNum);
 
 int main()
 {
@@ -15,6 +25,11 @@ int main()
 	WSADATA wsa;
 
 	slen = sizeof(si_other);
+
+
+
+	bool player1Connected = false;
+	bool player2Connected = false;
 
 	//Initialise winsock
 	printf("\nInitialising Winsock...");
@@ -65,16 +80,71 @@ int main()
 		printf("Received packet from %s:%d\n", inet_ntoa(si_other.sin_addr), ntohs(si_other.sin_port));
 		printf("Data: %s\n", buf);
 
+		std::string str = "";
+		if (!player1Connected || !player2Connected) {
+			if (buf[0] == '1') {
+				player1Connected = true;
+				player1.my_si_other = si_other;
+				player1.my_slen = slen;
+				if (!player2Connected) {
+					str = "1Player connected";
+					//strcpy(buf, str.c_str());
+					sendToPlayer(s, str, 1);
+				}
+			} else if (buf[0] == '2') {
+				player2Connected = true;
+				player2.my_si_other = si_other;
+				player2.my_slen = slen;
+				if (!player1Connected) {
+					str = "2Player connected";
+					//strcpy(buf, str.c_str());
+					sendToPlayer(s, str, 2);
+				}
+			}
+			if (player1Connected && player2Connected) {
+				str = "connection established";
+				//strcpy(buf, str.c_str());
+				sendToPlayer(s, str, 0);
+			}
+			recv_len = str.length();
+		}
+		//printf("%s\n", buf);
+
 		//now reply the client with the same data
-		if (sendto(s, buf, recv_len, 0, (struct sockaddr*) &si_other, slen) == SOCKET_ERROR)
+		/*if (sendto(s, buf, recv_len, 0, (struct sockaddr*) &si_other, slen) == SOCKET_ERROR)
 		{
 			printf("sendto() failed with error code : %d", WSAGetLastError());
 			exit(EXIT_FAILURE);
-		}
+		}*/
 	}
 
 	closesocket(s);
 	WSACleanup();
 
 	return 0;
+}
+
+// playNum -> 0 : send to both players
+void sendToPlayer(SOCKET s, string str, int playNum) {
+	char buf[BUFLEN];
+	memset(buf, '\0', BUFLEN);
+	strcpy(buf, str.c_str());
+	int recv_len = str.length();
+
+	printf("Sending to %i: %s\n", playNum, buf);
+
+	if (playNum == 1 || playNum == 0) {
+		if (sendto(s, buf, recv_len, 0, (struct sockaddr*) &player1.my_si_other, player1.my_slen) == SOCKET_ERROR)
+		{
+			printf("sendto() failed with error code : %d", WSAGetLastError());
+			exit(EXIT_FAILURE);
+		}
+	}
+	if (playNum == 2 || playNum == 0) {
+		if (sendto(s, buf, recv_len, 0, (struct sockaddr*) &player2.my_si_other, player2.my_slen) == SOCKET_ERROR)
+		{
+			printf("sendto() failed with error code : %d", WSAGetLastError());
+			exit(EXIT_FAILURE);
+		}
+	}
 }

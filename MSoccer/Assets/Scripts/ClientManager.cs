@@ -10,52 +10,98 @@ using System.Timers;
 
 public class ClientManager : MonoBehaviour {
 
+    private String server = "127.0.0.1";
+    private int port = 8888;
+
+    private DebugHandler myDebug;
+
     public static int playerNum = 0;
 
     public GameObject Player1;
     public GameObject Player2;
     public GameObject Ball;
 
+    public GameObject waitingForPlayers;
+
     static UdpClient udpClient = new UdpClient();
-    private static System.Timers.Timer aTimer;
-    static int cnt = 0;
+
+    public bool playersConnected;
 
     // Use this for initialization
     void Start () {
 
-        //ConnectTCP("127.0.0.1", 80, "GET /userDB.php?login="+strName+" HTTP/1.1\r\nHost: localhost:80\r\n\r\n" );
-        StartCoroutine(ConnectUDP("127.0.0.1", 8888, playerNum + " Player connected"));
-        //ConnectUDPThreaded("127.0.0.1", 20000, "Hello Server - And waiting...");
+        myDebug = this.GetComponent<DebugHandler>();
 
-        aTimer = new System.Timers.Timer(60);
-        aTimer.Elapsed += OnTimedEvent;
-        aTimer.AutoReset = true;
-        aTimer.Enabled = true;
+        playersConnected = false;
+
+        StartCoroutine(StartConnection(playerNum + " Player connecting"));
+        //StartCoroutine(ConnectUDP("127.0.0.1", 8888, 1 + " Player connected"));
 
     }
 
-    static void OnTimedEvent(System.Object source, ElapsedEventArgs e) {
-        Byte[] sendBytes = System.Text.Encoding.ASCII.GetBytes("Timer" + cnt);
-        udpClient.Send(sendBytes, sendBytes.Length);
-        cnt++;
+    IEnumerator StartConnection(string Message) {
+        UdpClient udpClient = new UdpClient();
+        udpClient.Connect(server, port);
+
+        waitingForPlayers.SetActive(true);
+        //int count = 0;
+        while (!playersConnected) {
+            //myDebug.Log(count + "Some message");
+            //DebugConsole.Log(count + "Some message");
+            //count++;
+
+            // Send
+            Byte[] sendMessage = System.Text.Encoding.ASCII.GetBytes(Message);
+            udpClient.Send(sendMessage, sendMessage.Length);
+            // Receive
+            IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, 0);
+            Byte[] received = udpClient.Receive(ref endPoint);
+            String data = System.Text.Encoding.ASCII.GetString(received);
+
+            myDebug.Log(data);
+            DebugConsole.Log(data);
+
+            yield return new WaitForSeconds(1);
+
+            if (data == "connection established") {
+                playersConnected = true;
+                myDebug.Log("Two players connected");
+                DebugConsole.Log("Two players connected (1-2)");
+            }
+        }
+        myDebug.Log("Two players connected (2-2)");
+        DebugConsole.Log("Two players connected (2-2)");
+        waitingForPlayers.SetActive(false);
     }
 
-    //IEnumerator Connect() {
-
-
-
-    //    yield return new WaitForSeconds(.1f);
-    //}
-
+    /*
     IEnumerator ConnectUDP(String server, Int32 port, String Message) {
         UdpClient udpClient = new UdpClient();
         //try {
-            udpClient.Connect(server, port);
+        udpClient.Connect(server, port);
 
-        Byte[] sendMessage = System.Text.Encoding.ASCII.GetBytes(Message);
-        udpClient.Send(sendMessage, sendMessage.Length);
+        //Wait for 2 players are connected
+        while (!playersConnected) {
+            // Send
+            Byte[] sendMessage = System.Text.Encoding.ASCII.GetBytes(Message);
+            udpClient.Send(sendMessage, sendMessage.Length);
+            // Receive
+            IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, 0);
+            Byte[] received = udpClient.Receive(ref endPoint);
+            String data = System.Text.Encoding.ASCII.GetString(received);
+
+            yield return new WaitForSeconds(.1f);
+
+            if (data == "Connection established")
+                playersConnected = true;
+        }
 
         while (true) {
+
+            //if(playerNum == 1) {
+
+            //}
+            
             String positions = Player1.transform.position.ToString();// + "&" + Ball.transform.position;
             Byte[] sendBytes = System.Text.Encoding.ASCII.GetBytes(positions);
             udpClient.Send(sendBytes, sendBytes.Length);
@@ -66,17 +112,18 @@ public class ClientManager : MonoBehaviour {
             String data = System.Text.Encoding.ASCII.GetString(received);
 
             //Debug.Log("--> " + data);
-            if(data.Substring(0, 1) != "0")
+            if(data.Substring(0, 1) != "0" && data.Substring(0, 1) != "1" && data.Substring(0, 1) != "2")
                 sendPlayer2Pos(data);
 
             yield return new WaitForSeconds(.01f);
         }
 
-            udpClient.Close();
+        udpClient.Close();
         //} catch (Exception e) {
         //    Debug.Log("Exception");
         //}
     }
+    */
 
     public void sendPlayer2Pos(String pos) {
         Debug.Log("Setting player2 position to: " + pos);
@@ -86,7 +133,7 @@ public class ClientManager : MonoBehaviour {
 
     void OnApplicationQuit() {
         Debug.Log("Quit");
-        aTimer.Stop();
+        //aTimer.Stop();
         udpClient.Close();
     }
 
