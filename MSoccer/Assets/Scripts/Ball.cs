@@ -5,6 +5,8 @@ using UnityEngine;
 public class Ball : MonoBehaviour {
 
     public Rigidbody2D rb;
+    public GameObject ball1;
+    public GameObject ball2;
     public GameManager gameManager;
     //public ClientManager clientManager;
 
@@ -13,9 +15,14 @@ public class Ball : MonoBehaviour {
 
         rb.GetComponent<Rigidbody2D>();
         gameManager.GetComponent<GameManager>();
-        //clientManager.GetComponent<ClientManager>();
 
-        rb.AddForce(new Vector2(100, 100));
+        if(ClientManager.playerNum == 1) {
+            ball2.SetActive(false);
+        } else {
+            ball1.SetActive(false);
+        }
+
+        //rb.AddForce(new Vector2(100, 100));
         //rb.velocity = new Vector2(5, 5);
 		
 	}

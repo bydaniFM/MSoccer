@@ -44,6 +44,7 @@ int main()
 
 	string lastPos1 = "1(7,0,0)";
 	string lastPos2 = "2(7,0,0)";
+	string lastPosBall = "B(0,0,0)";
 
 	//Initialise winsock
 	printf("\nInitialising Winsock...");
@@ -98,31 +99,56 @@ int main()
 		str = buf;
 
 		if (buf[0] == '1') {
-			if (!firstLoop1) {
-				lastPos1 = str;
+			if (buf[1] == 'B') {
+				if (!firstLoop1) {
+					lastPosBall = str;
+				} else {
+					firstLoop1 = false;
+				}
+				str = "Ball sent";
 			} else {
-				firstLoop1 = false;
-				player1Connected = true;
-				player1.my_si_other = si_other;
-				player1.my_slen = slen;
-				//str = "1Player connected";
+				if (!firstLoop1) {
+					lastPos1 = str;
+				} else {
+					/*firstLoop1 = false;*/
+					player1Connected = true;
+					player1.my_si_other = si_other;
+					player1.my_slen = slen;
+				}
+				str = lastPos2;
 			}
-			str = lastPos2;
 			sendToPlayer(s, str, 1);
 		}
 		if (buf[0] == '2') {
-			if (!firstLoop2) {
-				lastPos2 = str;
+			if (buf[1] == 'B') {
+				if (!firstLoop2) {
+					//lastPosBall = str;
+				} else {
+					firstLoop2 = false;
+				}
+				str = lastPosBall;
 			} else {
-				firstLoop2 = false;
-				player2Connected = true;
-				player2.my_si_other = si_other;
-				player2.my_slen = slen;
-				//str = "1Player connected";
+				if (!firstLoop2) {
+					lastPos2 = str;
+				} else {
+					//firstLoop2 = false;
+					player2Connected = true;
+					player2.my_si_other = si_other;
+					player2.my_slen = slen;
+				}
+				str = lastPos1;
 			}
-			str = lastPos1;
 			sendToPlayer(s, str, 2);
 		}
+		/*if (buf[1] == 'B') {
+			if (!firstLoop1) {
+				lastPosBall = str;
+			} else {
+				firstLoop1 = false;
+			}
+			str = lastPosBall;
+			sendToPlayer(s, str, 2);
+		}*/
 
 		/*
 		if (buf[0] == '1') {

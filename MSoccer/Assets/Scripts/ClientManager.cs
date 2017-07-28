@@ -19,7 +19,7 @@ public class ClientManager : MonoBehaviour {
 
     public GameObject Player1;
     public GameObject Player2;
-    public GameObject Ball;
+    public Ball myBall;
 
     public GameObject waitingForPlayers;
 
@@ -33,6 +33,7 @@ public class ClientManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
+        myBall.GetComponent<Ball>();
         myDebug = this.GetComponent<DebugHandler>();
 
         connected = false;
@@ -87,6 +88,7 @@ public class ClientManager : MonoBehaviour {
 
         inGame = true;
         string newPos = "";
+        string newBallPos = "";
 
         while (inGame) {
 
@@ -94,12 +96,18 @@ public class ClientManager : MonoBehaviour {
                 send(1 + Player1.transform.position.ToString());
                 newPos = receive();
                 if(newPos[1] == '(')
-                    sendPlayer2Pos(newPos);
+                    updateP2Pos(newPos);
+                send("1B" + myBall.ball1.transform.position.ToString());
+                newBallPos = receive();
             } else if (playerNum == 2) {
                 send(2 + Player1.transform.position.ToString());
                 newPos = receive();
                 if (newPos[1] == '(')
-                    sendPlayer2Pos(newPos);
+                    updateP2Pos(newPos);
+                send("2B"); // Ball pos request
+                newBallPos = receive();
+                if (newBallPos[2] == '(')
+                    updateBallPos(newBallPos);
             }
 
             yield return new WaitForSeconds(.01f);
@@ -121,13 +129,39 @@ public class ClientManager : MonoBehaviour {
         return data;
     }
 
-    public void sendPlayer2Pos(String posRaw) {
+    public void updateP2Pos(String posRaw) {
         String pos = posRaw.Substring(1);
-        Vector3 newPos = StringToVector3(pos);
-        //if (playerNum == 1)
-            newPos = new Vector3(-newPos.x, newPos.y);
+        //String ballPos = "";
+        Vector3 newPos = new Vector3();
+        //Vector3 newBallPos = new Vector3();
+        //if (playerNum == 1) {
+        //    newPos = StringToVector3(pos);
+        //}else if(playerNum == 2) {
+        //    //bool endPos = false;
+        //    //for(int i = 0; i < pos.Length && !endPos; i++) {
+        //    //    if(pos[i] == '&' && !endPos) {
+        //    //        pos = pos.Substring(0, i - 1);
+        //    //        ballPos = pos.Substring(i + 1);
+        //    //        endPos = true;
+        //    //    }
+        //    //}
+        //    newPos = StringToVector3(pos);
+        //    //newBallPos = StringToVector3(ballPos);
+        //    //DebugConsole.Log("Setting ball position to: " + newBallPos);
+        //    //myBall.transform.position = newBallPos;
+        //}
+        newPos = StringToVector3(pos);
+        newPos = new Vector3(-newPos.x, newPos.y);
         DebugConsole.Log("Setting player2 position to: " + newPos);
         Player2.transform.position = new Vector3(newPos.x, newPos.y);
+    }
+
+    public void updateBallPos(String ballPosRaw) {
+        String ballPos = ballPosRaw.Substring(2);
+        Vector3 newBallPos = new Vector3();
+        newBallPos = StringToVector3(ballPos);
+        DebugConsole.Log("Setting ball position to: " + newBallPos);
+        myBall.transform.position = new Vector3(-newBallPos.x, newBallPos.y);
     }
 
     void OnApplicationQuit() {
